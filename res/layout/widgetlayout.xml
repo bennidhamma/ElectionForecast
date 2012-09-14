@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000"
+        android:padding="8dp">
+	    <TextView
+	        android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+	        android:id="@+id/header"
+	        android:layout_gravity="center_horizontal"
+	        android:textColor="#fff"
+	        android:text="@string/electoral_vote"
+	        android:textSize="16dip" />
+	</FrameLayout>
+	
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:background="#fff"
+	    android:padding="8dp">>
+	    
+           	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		   		android:layout_width="match_parent"
+		   		android:layout_height="wrap_content"
+		    	android:orientation="horizontal">
+   
+	        	<TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:id="@+id/barackHeader"
+			        android:layout_weight="1"
+			        android:layout_gravity="left"
+			        android:text="@string/barack_obama"
+			        android:textColor="#00f"
+			        android:textSize="16dip" />
+   
+			   	<TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:id="@+id/mittHeader"
+			        android:layout_gravity="right"
+			        android:layout_weight="0.75"
+			        android:text="@string/mitt_romney"
+			        android:textSize="16dip" 
+			        android:textColor="#f00"/>
+				</LinearLayout>
+		
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal">
+    
+			    <TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:id="@+id/barackVotes"
+			        android:layout_weight="1"
+			        android:text="--"
+			        android:textSize="16dip" 
+			        android:textColor="#00f"/>
+			
+			    <TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:id="@+id/mittVotes"
+			    	android:layout_weight="0.75"
+			        android:text="--"
+			        android:textSize="16dip" 
+			        android:textColor="#f00"/>
+		    </LinearLayout>
+	</LinearLayout>
+</LinearLayout>

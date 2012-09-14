@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">ElectionForecast</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">2012 US Presidential Elections Forecast</string>
+    <string name="edit_message">Enter some text</string>
+    <string name="send">Send</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="electoral_vote">Electoral Vote</string>
+    <string name="barack_obama">Barack Obama</string>
+    <string name="mitt_romney">Mitt Romney</string>
+
+</resources>
