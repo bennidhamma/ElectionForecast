@@ -29,13 +29,12 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 	public void onEnabled(Context context)
 	{
 		super.onEnabled(context);
-		startDataTask();
 	}
 
-	public void startDataTask()
+	public void startDataTask(int[] appWidgetIds)
 	{
 		DataFetcher fetcher = new DataFetcher();
-		fetcher.execute();
+		fetcher.execute(appWidgetIds);
 		fetcher = null;
 	}
 
@@ -47,18 +46,20 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 	private static final int BARACK_POPULAR = 5;
 	private static final int MITT_POPULAR = 6;
 	private static final int UPDATE_TIME = 7;
-
-	private ElectionData data;
-	private int updateCount = 0;
+	
+	AppWidgetManager appWidgetManager;
+	Context context;
 
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds)
 	{
-		updateCount++;
-		Log.i("ElectionForecastWidgetProvider", "Update count: " + updateCount);
-		startDataTask();
-		if (data == null)
-			return;
+		this.context = context;
+		this.appWidgetManager = appWidgetManager;
+		startDataTask(appWidgetIds);
+	}
+	
+	public void updateRemoteView (int appWidgetId, ElectionData data)
+	{	
 		ArrayList<Object> today;
 		Number barackVotes = 0, mittVotes = 0;
 		try
@@ -70,43 +71,31 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		{
 			Log.e("ElectionForecastWidgetProvider", "Error parsing today values", e);
 		}
-		// Update each of the widgets with the remote adapter
-		for (int i = 0; i < appWidgetIds.length; ++i)
-		{
-			// Get the layout for the App Widget and attach an on-click listener
-			// to the button
-			int appWidgetId = appWidgetIds[i];
-			RemoteViews views = new RemoteViews(context.getPackageName(),
-					R.layout.widgetlayout);
-			views.setTextViewText(R.id.barackVotes, barackVotes.toString());
-			views.setTextViewText(R.id.mittVotes, mittVotes.toString());
-			// Tell the AppWidgetManager to perform an update on the current app
-			// widget
-			appWidgetManager.updateAppWidget(appWidgetId, views);
-		}
+		
+		RemoteViews views = new RemoteViews(this.context.getPackageName(),
+			R.layout.widgetlayout);
+		views.setTextViewText(R.id.barackVotes, barackVotes.toString());
+		views.setTextViewText(R.id.mittVotes, mittVotes.toString());
+		appWidgetManager.updateAppWidget(appWidgetId, views);
 	}
 
-	public ElectionData getData()
+	private class DataFetcher extends AsyncTask<int[], Void, ElectionData>
 	{
-		return data;
-	}
-
-	public void setData(ElectionData data)
-	{
-		this.data = data;
-	}
-
-	private class DataFetcher extends AsyncTask<Void, Void, ElectionData>
-	{
+		private int[] appWidgetIds;
+		
 		@Override
 		protected void onPostExecute(ElectionData result)
 		{
-			setData(result);
+			for (int i = 0; i < appWidgetIds.length; ++i)
+			{
+				updateRemoteView(appWidgetIds[i], result);
+			}
 		}
 
 		@Override
-		protected ElectionData doInBackground(Void... params)
+		protected ElectionData doInBackground(int[]... params)
 		{
+			appWidgetIds = params[0];
 			ElectionData d = null;
 			URLConnection jsonURL = null;
 			try
@@ -126,20 +115,14 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 			{
 				InputStream in = jsonURL.getInputStream();
 				String dataString = convertStreamToString(in);
-				Log.d("DataFetcher", "Length of JSON: " + dataString.length() + " url lengt: " + jsonURL.getContentLength() );
-				Log.d("DataFetcher", "JSON" + dataString);
 				// need to trim JSON-P prefix and suffix.
 				int firstIndex = dataString.indexOf('{');
 				int lastIndex = dataString.lastIndexOf('}');
-				Log.d("DataFetcher", "First index: " + firstIndex + ", last index: " + lastIndex);
 				dataString = dataString.substring(dataString.indexOf('{'));
 				dataString = dataString.substring(0,
 						dataString.lastIndexOf('}')+1);
-				Log.d("DataFetcher", "first char: " + dataString.charAt(0));
-				Log.d("DataFetcher", "last char: " + dataString.charAt(dataString.length()-1)); 
 				Gson gson = new Gson();
 				d = gson.fromJson(dataString, ElectionData.class);
-				return d;
 			} catch (Exception e)
 			{
 				Log.e("DataFetcher", e.getLocalizedMessage());
