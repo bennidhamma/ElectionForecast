@@ -8,18 +8,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-
-import org.json.JSONException;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.forgottenarts.electionforecast.data.ElectionData;
+import com.forgottenarts.electionforecast.data.ForecastEntry;
 import com.google.gson.Gson;
 
 public class ElectionForecastWidgetProvider extends AppWidgetProvider
@@ -38,14 +40,7 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		fetcher = null;
 	}
 
-	private static final int DATE = 0;
-	private static final int BARACK_VOTES = 1;
-	private static final int MITT_VOTES = 2;
-	private static final int BARACK_WIN_PROBABILITY = 3;
-	private static final int MITT_WIN_PROBABILITY = 4;
-	private static final int BARACK_POPULAR = 5;
-	private static final int MITT_POPULAR = 6;
-	private static final int UPDATE_TIME = 7;
+	
 	
 	AppWidgetManager appWidgetManager;
 	Context context;
@@ -60,23 +55,67 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 	
 	public void updateRemoteView (int appWidgetId, ElectionData data)
 	{	
-		ArrayList<Object> today;
-		Number barackVotes = 0, mittVotes = 0;
+		ForecastEntry today = null, yesterday = null;
+		
 		try
 		{
-			today = data.topline.forecast.get(0);
-			barackVotes = (Number)today.get(BARACK_VOTES);
-			mittVotes = (Number)today.get(MITT_VOTES);
+			today = new ForecastEntry(data.topline.forecast.get(0));
+			
 		} catch (Exception e)
 		{
 			Log.e("ElectionForecastWidgetProvider", "Error parsing today values", e);
 		}
 		
+		try
+		{
+			yesterday = new ForecastEntry(data.topline.forecast.get(1));
+			
+		} catch (Exception e)
+		{
+			Log.e("ElectionForecastWidgetProvider", "Error parsing yesterday values", e);
+		}
+		
 		RemoteViews views = new RemoteViews(this.context.getPackageName(),
 			R.layout.widgetlayout);
-		views.setTextViewText(R.id.barackVotes, barackVotes.toString());
-		views.setTextViewText(R.id.mittVotes, mittVotes.toString());
+		views.setTextViewText(R.id.barackVotes, today.getBarackVotes().toString());
+		views.setTextViewText(R.id.mittVotes, today.getMittVotes().toString());
+		views.setTextViewText(R.id.barackChance, today.getBarackChance().toString() + '%');
+		views.setTextViewText(R.id.mittChance, today.getMittChance().toString() + '%');
+		views.setTextViewText(R.id.barackPopular, today.getBarackPopular().toString() + '%');
+		views.setTextViewText(R.id.mittPopular, today.getMittPopular().toString() + '%');
+		
+		//bars
+		
+		try
+		{
+			int electoralPercent = (int)(today.getBarackVotes() / 538.0 * 100);
+			setBitmap (views, R.id.electoralBar, electoralPercent);
+			setBitmap (views, R.id.chanceBar,  today.getBarackChance().intValue());
+			setBitmap (views, R.id.popularBar, today.getBarackPopular().intValue());
+		}
+		catch(Exception e)
+		{
+			Log.e("ElectionForecastWidgetProvider", "error with bar", e);
+		}
 		appWidgetManager.updateAppWidget(appWidgetId, views);
+	}
+	
+	private void setBitmap (RemoteViews views, int id, int percent)
+	{
+		Bitmap bitmap = Bitmap.createBitmap(200, 10, Bitmap.Config.ARGB_8888); 
+		Canvas canvas = new Canvas(bitmap);
+		Paint red = new Paint ();
+		red.setColor(0xFFCC0000);
+		Paint blue = new Paint ();
+		blue.setColor (0xFF0099CC);
+		Paint black = new Paint ();
+		black.setColor (0xFF000000);
+		canvas.drawRect(0, 0, 200, 10, red);
+		
+		canvas.drawRect(0, 0, percent * 2, 10, blue);
+		canvas.drawLine(100, 0, 100, 10, black);
+		
+		views.setBitmap(id, "setImageBitmap", bitmap);
 	}
 
 	private class DataFetcher extends AsyncTask<int[], Void, ElectionData>

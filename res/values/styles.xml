@@ -1,5 +1,30 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme" parent="android:Theme.Light" />
+    
+    <style name="SectionHeader">
+        <item name="android:gravity">left</item>
+        <item name="android:textSize">16dip</item>
+        <item name="android:textColor">#777</item>        
+        <item name="android:drawableBottom">@android:color/black</item>
+]    </style>
+    
+    <style name="SubHeader">
+        <item name="android:textColor">#444</item>
+        <item name="android:textSize">18dip</item>
+        <item name="android:paddingBottom">3dp</item>
+    </style>
+    
+    <style name="Barack">
+        <item name="android:textColor">#0099CC</item>
+         <item name="android:textSize">24dip</item>
+         <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="Mitt">
+        <item name="android:textColor">#CC0000</item>
+         <item name="android:textSize">24dip</item>
+         <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

@@ -2,78 +2,143 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000"
-        android:padding="8dp">
-	    <TextView
-	        android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-	        android:id="@+id/header"
-	        android:layout_gravity="center_horizontal"
-	        android:textColor="#fff"
-	        android:text="@string/electoral_vote"
-	        android:textSize="16dip" />
-	</FrameLayout>
+    android:orientation="vertical"
+    android:background="@drawable/border"
+    android:padding="8dp">
+    
+   	<LinearLayout
+   		android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+    	android:orientation="horizontal">
+ 
+       	<TextView
+       	    style="@style/SubHeader"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/barackHeader"
+	        android:layout_weight="1"
+	        android:layout_gravity="left"
+	        android:text="@string/barack_obama"/>
+ 
+	   	<TextView
+	   	    style="@style/SubHeader"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/mittHeader"
+	        android:layout_gravity="right"
+	        android:layout_weight="0.75"
+	        android:text="@string/mitt_romney"/>
+	</LinearLayout>
+	    
+    <TextView
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:id="@+id/electoralVoteHeader"
+     android:layout_gravity="center_horizontal"
+     android:text="@string/electoral_vote"
+     android:drawableBottom="#222"
+     style="@style/SectionHeader"/>         
 	
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:background="#fff"
-	    android:padding="8dp">>
-	    
-           	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		   		android:layout_width="match_parent"
-		   		android:layout_height="wrap_content"
-		    	android:orientation="horizontal">
-   
-	        	<TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:id="@+id/barackHeader"
-			        android:layout_weight="1"
-			        android:layout_gravity="left"
-			        android:text="@string/barack_obama"
-			        android:textColor="#00f"
-			        android:textSize="16dip" />
-   
-			   	<TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:id="@+id/mittHeader"
-			        android:layout_gravity="right"
-			        android:layout_weight="0.75"
-			        android:text="@string/mitt_romney"
-			        android:textSize="16dip" 
-			        android:textColor="#f00"/>
-				</LinearLayout>
-		
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal">
+	    android:orientation="horizontal">
+  
+	    <TextView
+	        style="@style/Barack"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/barackVotes"
+	        android:layout_weight="1"
+	        android:text="--"/>
+	
+	    <TextView
+	        style="@style/Mitt"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/mittVotes"
+	    	android:layout_weight="0.75"
+	        android:text="--"/>
+    </LinearLayout>
+  
+    <ImageView
+        android:id="@+id/electoralBar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:scaleType="fitXY"/>
     
-			    <TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:id="@+id/barackVotes"
-			        android:layout_weight="1"
-			        android:text="--"
-			        android:textSize="16dip" 
-			        android:textColor="#00f"/>
-			
-			    <TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:id="@+id/mittVotes"
-			    	android:layout_weight="0.75"
-			        android:text="--"
-			        android:textSize="16dip" 
-			        android:textColor="#f00"/>
-		    </LinearLayout>
-	</LinearLayout>
+     <TextView
+     android:paddingTop="6dp"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:id="@+id/chanceOfWinningHeader"
+     android:layout_gravity="center_horizontal"
+     android:text="@string/chance_of_winning"
+     android:drawableBottom="#222"
+     style="@style/SectionHeader"/> 
+     
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+  
+	    <TextView
+	        style="@style/Barack"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/barackChance"
+	        android:layout_weight="1"
+	        android:text="--"/>
+	
+	    <TextView
+	        style="@style/Mitt"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/mittChance"
+	    	android:layout_weight="0.75"
+	        android:text="--"/>
+    </LinearLayout>
+    
+     <ImageView
+        android:id="@+id/chanceBar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:scaleType="fitXY"/>
+    
+     <TextView
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:id="@+id/popularVoteHeader"
+     android:layout_gravity="center_horizontal"
+     android:text="@string/popular_vote"
+     android:drawableBottom="#222"
+     style="@style/SectionHeader"/> 
+     
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+  
+	    <TextView
+	        style="@style/Barack"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/barackPopular"
+	        android:layout_weight="1"
+	        android:text="--"/>
+	
+	    <TextView
+	        style="@style/Mitt"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/mittPopular"
+	    	android:layout_weight="0.75"
+	        android:text="--"/>
+    </LinearLayout>
+    
+     <ImageView
+        android:id="@+id/popularBar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:scaleType="fitXY"/>
 </LinearLayout>

@@ -8,6 +8,8 @@
     <string name="send">Send</string>
     <string name="title_activity_display_message">My Message</string>
     <string name="electoral_vote">Electoral Vote</string>
+    <string name="chance_of_winning">Chance of Winning</string>
+    <string name="popular_vote">Popular Vote</string>
     <string name="barack_obama">Barack Obama</string>
     <string name="mitt_romney">Mitt Romney</string>
 

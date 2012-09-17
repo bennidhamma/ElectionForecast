@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
    
     <EditText android:id="@+id/edit_message"
         android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:hint="@string/edit_message" />
     
     <Button
@@ -15,4 +15,9 @@
         android:layout_height="wrap_content"
         android:text="@string/send" 
         android:onClick="sendMessage"/>
+    
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/image"/>
 </LinearLayout>
