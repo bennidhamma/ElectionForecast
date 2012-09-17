@@ -19,8 +19,8 @@
 	        android:layout_weight="1"
 	        android:layout_gravity="left"
 	        android:text="@string/barack_obama"/>
- 
-	   	<TextView
+       	
+       	<TextView
 	   	    style="@style/SubHeader"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -42,68 +42,96 @@
     <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="horizontal">
+	    android:orientation="horizontal"
+	    android:paddingTop="3dp">
   
 	    <TextView
 	        style="@style/Barack"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:id="@+id/barackVotes"
-	        android:layout_weight="1"
+	        android:layout_weight="0.1"
 	        android:text="--"/>
+	    
+	     <TextView
+	        style="@style/Barack.Small"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/barackElectoralChange"
+	        android:layout_weight="1.5"
+	        android:text="-2.1"/>
 	
 	    <TextView
 	        style="@style/Mitt"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:id="@+id/mittVotes"
-	    	android:layout_weight="0.75"
+	    	android:layout_weight="0.1"
 	        android:text="--"/>
+	    
+	     <TextView
+	        style="@style/Mitt.Small"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/mittElectoralChange"
+	        android:layout_weight="1"
+	        android:text="+2.1"/>
     </LinearLayout>
   
     <ImageView
-        android:id="@+id/electoralBar"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:scaleType="fitXY"/>
+        style="@style/BarStyle"
+        android:id="@+id/electoralBar"/>
     
      <TextView
-     android:paddingTop="6dp"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
      android:id="@+id/chanceOfWinningHeader"
      android:layout_gravity="center_horizontal"
      android:text="@string/chance_of_winning"
-     android:drawableBottom="#222"
      style="@style/SectionHeader"/> 
      
     <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="horizontal">
+	    android:orientation="horizontal"
+	    android:paddingTop="3dp">
   
 	    <TextView
 	        style="@style/Barack"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:id="@+id/barackChance"
-	        android:layout_weight="1"
+	        android:layout_weight="0.1"
 	        android:text="--"/>
+	    
+	    <TextView
+	        style="@style/Barack.Small"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/barackChanceChange"
+	        android:layout_weight="1.5"
+	        android:text="-2.1"/>
 	
 	    <TextView
 	        style="@style/Mitt"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:id="@+id/mittChance"
-	    	android:layout_weight="0.75"
+	    	android:layout_weight="0.1"
 	        android:text="--"/>
+	    
+	     <TextView
+	        style="@style/Mitt.Small"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/mittChanceChange"
+	        android:layout_weight="1"
+	        android:text="+2.1"/>
     </LinearLayout>
     
      <ImageView
-        android:id="@+id/chanceBar"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:scaleType="fitXY"/>
+        style="@style/BarStyle"
+        android:id="@+id/chanceBar"/>
     
      <TextView
      android:layout_width="match_parent"
@@ -111,34 +139,69 @@
      android:id="@+id/popularVoteHeader"
      android:layout_gravity="center_horizontal"
      android:text="@string/popular_vote"
-     android:drawableBottom="#222"
      style="@style/SectionHeader"/> 
      
     <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="horizontal">
+	    android:orientation="horizontal"
+	    android:paddingTop="3dp">
   
 	    <TextView
 	        style="@style/Barack"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:id="@+id/barackPopular"
-	        android:layout_weight="1"
+	        android:layout_weight="0.1"
 	        android:text="--"/>
+	    
+	    <TextView
+	        style="@style/Barack.Small"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/barackPopularChange"
+	        android:layout_weight="1.5"
+	        android:text="-2.1"/>
 	
 	    <TextView
 	        style="@style/Mitt"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:id="@+id/mittPopular"
-	    	android:layout_weight="0.75"
+	    	android:layout_weight="0.1"
 	        android:text="--"/>
+	    
+	    <TextView
+	        style="@style/Mitt.Small"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/mittPopularChange"
+	        android:layout_weight="1"
+	        android:text="+2.1"/>
     </LinearLayout>
     
      <ImageView
-        android:id="@+id/popularBar"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:scaleType="fitXY"/>
+        style="@style/BarStyle"
+        android:id="@+id/popularBar"/>
+     
+      <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+     
+	     <TextView
+	        android:id="@+id/readMore"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"     
+	        android:layout_weight="0.1"   
+	        android:text="@string/read_more" />
+	     
+	      <TextView
+	        android:id="@+id/lastUpdated"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:layout_weight="1"
+	        android:layout_gravity="right"       
+	        android:text="last updated" />
+	  </LinearLayout>
 </LinearLayout>

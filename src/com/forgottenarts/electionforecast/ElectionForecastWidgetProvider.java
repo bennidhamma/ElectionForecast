@@ -8,15 +8,18 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -77,6 +80,9 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		
 		RemoteViews views = new RemoteViews(this.context.getPackageName(),
 			R.layout.widgetlayout);
+		
+		
+		//update text views with today's values.
 		views.setTextViewText(R.id.barackVotes, today.getBarackVotes().toString());
 		views.setTextViewText(R.id.mittVotes, today.getMittVotes().toString());
 		views.setTextViewText(R.id.barackChance, today.getBarackChance().toString() + '%');
@@ -84,14 +90,35 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		views.setTextViewText(R.id.barackPopular, today.getBarackPopular().toString() + '%');
 		views.setTextViewText(R.id.mittPopular, today.getMittPopular().toString() + '%');
 		
+		//changes
+		Double barackElectoralChange = today.getBarackVotes() - yesterday.getBarackVotes();
+		Double mittElectoralChange = today.getMittVotes() - yesterday.getMittVotes();
+		Double barackChanceChange = today.getBarackChance() - yesterday.getBarackChance();
+		Double mittChanceChange = today.getMittChance() - yesterday.getMittChance();
+		Double barackPopularChange = today.getBarackPopular() - yesterday.getBarackPopular();
+		Double mittPopularChange = today.getMittPopular() - yesterday.getMittPopular();
+		
+		DecimalFormat myFormatter = new DecimalFormat("+#.##;-#.##");
+		
+		views.setTextViewText(R.id.barackElectoralChange, myFormatter.format(barackElectoralChange));
+		views.setTextViewText(R.id.mittElectoralChange,  myFormatter.format(mittElectoralChange));
+		views.setTextViewText(R.id.barackChanceChange,  myFormatter.format(barackChanceChange));
+		views.setTextViewText(R.id.mittChanceChange,  myFormatter.format(mittChanceChange));
+		views.setTextViewText(R.id.barackPopularChange,  myFormatter.format(barackPopularChange));
+		views.setTextViewText(R.id.mittPopularChange,  myFormatter.format(mittPopularChange));
+		
+		PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, new Intent(Intent.ACTION_VIEW, 
+				Uri.parse("http://fivethirtyeight.blogs.nytimes.com")), 0);
+		views.setOnClickPendingIntent(R.id.readMore, pendingIntent);
+		
 		//bars
 		
 		try
 		{
-			int electoralPercent = (int)(today.getBarackVotes() / 538.0 * 100);
-			setBitmap (views, R.id.electoralBar, electoralPercent);
-			setBitmap (views, R.id.chanceBar,  today.getBarackChance().intValue());
-			setBitmap (views, R.id.popularBar, today.getBarackPopular().intValue());
+			double electoralPercent = (today.getBarackVotes() / 538.0 * 100);
+			setBitmap (views, R.id.electoralBar, electoralPercent, 100 - electoralPercent);
+			setBitmap (views, R.id.chanceBar,  today.getBarackChance(), today.getMittChance());
+			setBitmap (views, R.id.popularBar, today.getBarackPopular(), today.getMittPopular());
 		}
 		catch(Exception e)
 		{
@@ -100,7 +127,7 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 	}
 	
-	private void setBitmap (RemoteViews views, int id, int percent)
+	private void setBitmap (RemoteViews views, int id, double bluePercent, double redPercent)
 	{
 		Bitmap bitmap = Bitmap.createBitmap(200, 10, Bitmap.Config.ARGB_8888); 
 		Canvas canvas = new Canvas(bitmap);
@@ -110,9 +137,9 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		blue.setColor (0xFF0099CC);
 		Paint black = new Paint ();
 		black.setColor (0xFF000000);
-		canvas.drawRect(0, 0, 200, 10, red);
+		canvas.drawRect(200 - (float)redPercent * 2, 0, 200, 10, red);
 		
-		canvas.drawRect(0, 0, percent * 2, 10, blue);
+		canvas.drawRect(0, 0, (float)bluePercent * 2, 10, blue);
 		canvas.drawLine(100, 0, 100, 10, black);
 		
 		views.setBitmap(id, "setImageBitmap", bitmap);

@@ -10,7 +10,8 @@
     <string name="electoral_vote">Electoral Vote</string>
     <string name="chance_of_winning">Chance of Winning</string>
     <string name="popular_vote">Popular Vote</string>
-    <string name="barack_obama">Barack Obama</string>
-    <string name="mitt_romney">Mitt Romney</string>
+    <string name="barack_obama">Obama</string>
+    <string name="mitt_romney">Romney</string>
+    <string name="read_more"><u>read more</u></string>
 
 </resources>
