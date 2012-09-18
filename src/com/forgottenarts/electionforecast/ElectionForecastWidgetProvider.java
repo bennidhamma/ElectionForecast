@@ -10,16 +10,22 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -29,11 +35,14 @@ import com.google.gson.Gson;
 
 public class ElectionForecastWidgetProvider extends AppWidgetProvider
 {
-
+	public static final String UPDATE_KEY = "LastElectionsUpdateTime";
+	
+	private SharedPreferences settings;
 	@Override
 	public void onEnabled(Context context)
 	{
 		super.onEnabled(context);
+		settings = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
 	public void startDataTask(int[] appWidgetIds)
@@ -107,12 +116,14 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		views.setTextViewText(R.id.barackPopularChange,  myFormatter.format(barackPopularChange));
 		views.setTextViewText(R.id.mittPopularChange,  myFormatter.format(mittPopularChange));
 		
-		PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, new Intent(Intent.ACTION_VIEW, 
-				Uri.parse("http://fivethirtyeight.blogs.nytimes.com")), 0);
-		views.setOnClickPendingIntent(R.id.readMore, pendingIntent);
+		//last updated
+		views.setTextViewText(R.id.lastUpdated, 
+				"updated " + DateUtils.getRelativeTimeSpanString(today.getUpdateTime().getTime()));
+		Intent updateIntent = new Intent(this.context, ElectionForecastWidgetProvider.class);
+		PendingIntent pi = PendingIntent.getBroadcast(this.context,0, updateIntent,0);
+		views.setOnClickPendingIntent(R.id.lastUpdated, pi);		
 		
 		//bars
-		
 		try
 		{
 			double electoralPercent = (today.getBarackVotes() / 538.0 * 100);
@@ -124,9 +135,43 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		{
 			Log.e("ElectionForecastWidgetProvider", "error with bar", e);
 		}
+		
 		appWidgetManager.updateAppWidget(appWidgetId, views);
+		
+		//read more
+		PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, new Intent(Intent.ACTION_VIEW, 
+				Uri.parse("http://fivethirtyeight.blogs.nytimes.com")), 0);
+		views.setOnClickPendingIntent(R.id.readMore, pendingIntent);
+		
+		//check to see if we have a newer date time.
+		if (settings == null)
+			settings = PreferenceManager.getDefaultSharedPreferences(context);
+		long lastUpdateTime = settings.getLong(UPDATE_KEY, 0);
+		if (true || lastUpdateTime != today.getUpdateTime().getTime())
+		{
+			//send notification, update settings.
+			DoForecastUpdated (today.getUpdateTime().getTime(), barackChanceChange);
+		}	
 	}
 	
+	private void DoForecastUpdated(long newTime, Double barackChanceChange)
+	{
+		Editor editor = settings.edit();
+		editor.putLong(UPDATE_KEY, newTime);
+		editor.commit();
+		
+		DecimalFormat myFormatter = new DecimalFormat("#.##");
+		String message = String.format("Barack Obama's chances of winning the election have %s by %s points.",
+				barackChanceChange > 0 ? "increased" : "decreased", myFormatter.format(Math.abs(barackChanceChange)));
+		Notification notification = new Notification.Builder(this.context)
+			.setContentTitle ("Election forecast updated.")
+			.setContentTitle (message)
+			.getNotification();
+		String ns = Context.NOTIFICATION_SERVICE;
+		NotificationManager mNotificationManager = (NotificationManager) this.context.getSystemService(ns);
+		mNotificationManager.notify(1, notification);
+	}
+
 	private void setBitmap (RemoteViews views, int id, double bluePercent, double redPercent)
 	{
 		Bitmap bitmap = Bitmap.createBitmap(200, 10, Bitmap.Config.ARGB_8888); 

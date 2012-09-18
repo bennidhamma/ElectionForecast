@@ -184,7 +184,7 @@
         style="@style/BarStyle"
         android:id="@+id/popularBar"/>
      
-      <LinearLayout
+     <RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal">
@@ -192,16 +192,15 @@
 	     <TextView
 	        android:id="@+id/readMore"
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"     
-	        android:layout_weight="0.1"   
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true" 
 	        android:text="@string/read_more" />
 	     
 	      <TextView
 	        android:id="@+id/lastUpdated"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
-	        android:layout_weight="1"
-	        android:layout_gravity="right"       
-	        android:text="last updated" />
-	  </LinearLayout>
+	       	android:layout_alignParentRight="true"  
+	        android:text="@string/last_updated" />
+	  </RelativeLayout>
 </LinearLayout>

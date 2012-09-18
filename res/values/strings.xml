@@ -13,5 +13,5 @@
     <string name="barack_obama">Obama</string>
     <string name="mitt_romney">Romney</string>
     <string name="read_more"><u>read more</u></string>
-
+    <string name="last_updated"><u>last updated: </u></string>
 </resources>

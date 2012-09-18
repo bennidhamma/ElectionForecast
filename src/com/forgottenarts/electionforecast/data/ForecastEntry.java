@@ -1,6 +1,10 @@
 package com.forgottenarts.electionforecast.data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class ForecastEntry
 {
@@ -13,7 +17,8 @@ public class ForecastEntry
 	private static final int MITT_POPULAR = 6;
 	private static final int UPDATE_TIME = 7;
 	
-	String date, updateTime;
+	String date;
+	Date updateTime;
 	public String getDate()
 	{
 		return date;
@@ -24,12 +29,12 @@ public class ForecastEntry
 		this.date = date;
 	}
 
-	public String getUpdateTime()
+	public Date getUpdateTime()
 	{
 		return updateTime;
 	}
 
-	public void setUpdateTime(String updateTime)
+	public void setUpdateTime(Date updateTime)
 	{
 		this.updateTime = updateTime;
 	}
@@ -106,5 +111,16 @@ public class ForecastEntry
 		mittChance = (Double)source.get(MITT_WIN_PROBABILITY);
 		barackPopular = (Double)source.get(BARACK_POPULAR);
 		mittPopular = (Double)source.get(MITT_POPULAR);
+		
+		SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ss'Z'");
+		simpleDateFormatter.setTimeZone(TimeZone.getTimeZone("ET"));
+		try
+		{
+			updateTime = simpleDateFormatter.parse((String)source.get(UPDATE_TIME));
+		} catch (ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

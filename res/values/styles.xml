@@ -23,7 +23,7 @@
     <style name="SubHeader">
         <item name="android:textColor">#444</item>
         <item name="android:textSize">14dip</item>
-        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingBottom">0dp</item>
          <item name="android:textStyle">bold</item>
     </style>
     
