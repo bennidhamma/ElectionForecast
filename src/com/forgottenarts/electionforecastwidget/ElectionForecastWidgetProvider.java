@@ -1,4 +1,4 @@
-package com.forgottenarts.electionforecast;
+package com.forgottenarts.electionforecastwidget;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,8 +29,9 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.forgottenarts.electionforecast.data.ElectionData;
-import com.forgottenarts.electionforecast.data.ForecastEntry;
+import com.forgottenarts.electionforecastwidget.R;
+import com.forgottenarts.electionforecastwidget.data.ElectionData;
+import com.forgottenarts.electionforecastwidget.data.ForecastEntry;
 import com.google.gson.Gson;
 
 public class ElectionForecastWidgetProvider extends AppWidgetProvider
@@ -90,38 +91,52 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		RemoteViews views = new RemoteViews(this.context.getPackageName(),
 			R.layout.widgetlayout);
 		
-		
-		//update text views with today's values.
-		views.setTextViewText(R.id.barackVotes, today.getBarackVotes().toString());
-		views.setTextViewText(R.id.mittVotes, today.getMittVotes().toString());
-		views.setTextViewText(R.id.barackChance, today.getBarackChance().toString() + '%');
-		views.setTextViewText(R.id.mittChance, today.getMittChance().toString() + '%');
-		views.setTextViewText(R.id.barackPopular, today.getBarackPopular().toString() + '%');
-		views.setTextViewText(R.id.mittPopular, today.getMittPopular().toString() + '%');
-		
 		//changes
-		Double barackElectoralChange = today.getBarackVotes() - yesterday.getBarackVotes();
-		Double mittElectoralChange = today.getMittVotes() - yesterday.getMittVotes();
-		Double barackChanceChange = today.getBarackChance() - yesterday.getBarackChance();
-		Double mittChanceChange = today.getMittChance() - yesterday.getMittChance();
-		Double barackPopularChange = today.getBarackPopular() - yesterday.getBarackPopular();
-		Double mittPopularChange = today.getMittPopular() - yesterday.getMittPopular();
+		Double barackElectoralChange;
+		Double mittElectoralChange;
+		Double barackChanceChange = 0.0;
+		Double mittChanceChange;
+		Double barackPopularChange;
+		Double mittPopularChange;
 		
-		DecimalFormat myFormatter = new DecimalFormat("+#.##;-#.##");
-		
-		views.setTextViewText(R.id.barackElectoralChange, myFormatter.format(barackElectoralChange));
-		views.setTextViewText(R.id.mittElectoralChange,  myFormatter.format(mittElectoralChange));
-		views.setTextViewText(R.id.barackChanceChange,  myFormatter.format(barackChanceChange));
-		views.setTextViewText(R.id.mittChanceChange,  myFormatter.format(mittChanceChange));
-		views.setTextViewText(R.id.barackPopularChange,  myFormatter.format(barackPopularChange));
-		views.setTextViewText(R.id.mittPopularChange,  myFormatter.format(mittPopularChange));
-		
-		//last updated
-		views.setTextViewText(R.id.lastUpdated, 
-				"updated " + DateUtils.getRelativeTimeSpanString(today.getUpdateTime().getTime()));
-		Intent updateIntent = new Intent(this.context, ElectionForecastWidgetProvider.class);
-		PendingIntent pi = PendingIntent.getBroadcast(this.context,0, updateIntent,0);
-		views.setOnClickPendingIntent(R.id.lastUpdated, pi);		
+		try
+		{
+			//update text views with today's values.
+			views.setTextViewText(R.id.barackVotes, today.getBarackVotes().toString());
+			views.setTextViewText(R.id.mittVotes, today.getMittVotes().toString());
+			views.setTextViewText(R.id.barackChance, today.getBarackChance().toString() + '%');
+			views.setTextViewText(R.id.mittChance, today.getMittChance().toString() + '%');
+			views.setTextViewText(R.id.barackPopular, today.getBarackPopular().toString() + '%');
+			views.setTextViewText(R.id.mittPopular, today.getMittPopular().toString() + '%');
+			
+			//changes
+			barackElectoralChange = today.getBarackVotes() - yesterday.getBarackVotes();
+			mittElectoralChange = today.getMittVotes() - yesterday.getMittVotes();
+			barackChanceChange = today.getBarackChance() - yesterday.getBarackChance();
+			mittChanceChange = today.getMittChance() - yesterday.getMittChance();
+			barackPopularChange = today.getBarackPopular() - yesterday.getBarackPopular();
+			mittPopularChange = today.getMittPopular() - yesterday.getMittPopular();
+			
+			DecimalFormat myFormatter = new DecimalFormat("+#.##;-#.##");
+			
+			views.setTextViewText(R.id.barackElectoralChange, myFormatter.format(barackElectoralChange));
+			views.setTextViewText(R.id.mittElectoralChange,  myFormatter.format(mittElectoralChange));
+			views.setTextViewText(R.id.barackChanceChange,  myFormatter.format(barackChanceChange));
+			views.setTextViewText(R.id.mittChanceChange,  myFormatter.format(mittChanceChange));
+			views.setTextViewText(R.id.barackPopularChange,  myFormatter.format(barackPopularChange));
+			views.setTextViewText(R.id.mittPopularChange,  myFormatter.format(mittPopularChange));
+			
+			//last updated
+			views.setTextViewText(R.id.lastUpdated, 
+					"updated " + DateUtils.getRelativeTimeSpanString(today.getUpdateTime().getTime()));
+			Intent updateIntent = new Intent(this.context, ElectionForecastWidgetProvider.class);
+			PendingIntent pi = PendingIntent.getBroadcast(this.context,0, updateIntent,0);
+			views.setOnClickPendingIntent(R.id.lastUpdated, pi);
+		}
+		catch(Exception e)
+		{
+			Log.e("ElectionForecastWidgetProvider", "Error in result", e);
+		}
 		
 		//bars
 		try
@@ -136,18 +151,18 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 			Log.e("ElectionForecastWidgetProvider", "error with bar", e);
 		}
 		
-		appWidgetManager.updateAppWidget(appWidgetId, views);
-		
 		//read more
 		PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, new Intent(Intent.ACTION_VIEW, 
 				Uri.parse("http://fivethirtyeight.blogs.nytimes.com")), 0);
 		views.setOnClickPendingIntent(R.id.readMore, pendingIntent);
 		
+		appWidgetManager.updateAppWidget(appWidgetId, views);
+		
 		//check to see if we have a newer date time.
 		if (settings == null)
 			settings = PreferenceManager.getDefaultSharedPreferences(context);
 		long lastUpdateTime = settings.getLong(UPDATE_KEY, 0);
-		if (true || lastUpdateTime != today.getUpdateTime().getTime())
+		if (lastUpdateTime != today.getUpdateTime().getTime())
 		{
 			//send notification, update settings.
 			DoForecastUpdated (today.getUpdateTime().getTime(), barackChanceChange);
@@ -161,12 +176,17 @@ public class ElectionForecastWidgetProvider extends AppWidgetProvider
 		editor.commit();
 		
 		DecimalFormat myFormatter = new DecimalFormat("#.##");
-		String message = String.format("Barack Obama's chances of winning the election have %s by %s points.",
+		String message = String.format("Obama's chances have %s by %s%%.",
 				barackChanceChange > 0 ? "increased" : "decreased", myFormatter.format(Math.abs(barackChanceChange)));
-		Notification notification = new Notification.Builder(this.context)
-			.setContentTitle ("Election forecast updated.")
-			.setContentTitle (message)
-			.getNotification();
+		long when = System.currentTimeMillis();
+		int icon = barackChanceChange > 0 ? R.drawable.ic_stat_obama_up : R.drawable.ic_stat_obama_down;
+		Notification notification = new Notification(icon, message, when);
+			
+		PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, new Intent(Intent.ACTION_VIEW, 
+				Uri.parse("http://fivethirtyeight.blogs.nytimes.com")), 0);
+		
+		notification.setLatestEventInfo(this.context, "Election forecast updated", message, pendingIntent);
+			
 		String ns = Context.NOTIFICATION_SERVICE;
 		NotificationManager mNotificationManager = (NotificationManager) this.context.getSystemService(ns);
 		mNotificationManager.notify(1, notification);

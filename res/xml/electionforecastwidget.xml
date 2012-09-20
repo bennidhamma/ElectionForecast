@@ -21,5 +21,6 @@
   android:initialLayout="@layout/widgetlayout"
   android:resizeMode="horizontal|vertical"
   android:minResizeWidth="140dp"
-  android:minResizeHeight="150dp">
+  android:minResizeHeight="150dp"
+  android:previewImage="@drawable/preview">
 </appwidget-provider>

@@ -1,4 +1,4 @@
-package com.forgottenarts.electionforecast;
+package com.forgottenarts.electionforecastwidget;
 
 import android.app.Activity;
 import android.content.Intent;

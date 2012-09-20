@@ -1,4 +1,4 @@
-package com.forgottenarts.electionforecast.data;
+package com.forgottenarts.electionforecastwidget.data;
 
 import java.util.ArrayList;
 

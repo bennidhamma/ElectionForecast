@@ -4,7 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/border"
-    android:padding="8dp">
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp">
     
    	<LinearLayout
    		android:layout_width="match_parent"
@@ -31,8 +34,6 @@
 	</LinearLayout>
 	    
     <TextView
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
      android:id="@+id/electoralVoteHeader"
      android:layout_gravity="center_horizontal"
      android:text="@string/electoral_vote"
@@ -42,8 +43,7 @@
     <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:paddingTop="3dp">
+	    android:orientation="horizontal">
   
 	    <TextView
 	        style="@style/Barack"
@@ -59,7 +59,7 @@
 	        android:layout_height="wrap_content"
 	        android:id="@+id/barackElectoralChange"
 	        android:layout_weight="1.5"
-	        android:text="-2.1"/>
+	        android:text=""/>
 	
 	    <TextView
 	        style="@style/Mitt"
@@ -75,7 +75,7 @@
 	        android:layout_height="wrap_content"
 	        android:id="@+id/mittElectoralChange"
 	        android:layout_weight="1"
-	        android:text="+2.1"/>
+	        android:text=""/>
     </LinearLayout>
   
     <ImageView
@@ -83,18 +83,14 @@
         android:id="@+id/electoralBar"/>
     
      <TextView
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
      android:id="@+id/chanceOfWinningHeader"
-     android:layout_gravity="center_horizontal"
      android:text="@string/chance_of_winning"
      style="@style/SectionHeader"/> 
      
     <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:paddingTop="3dp">
+	    android:orientation="horizontal">
   
 	    <TextView
 	        style="@style/Barack"
@@ -110,7 +106,7 @@
 	        android:layout_height="wrap_content"
 	        android:id="@+id/barackChanceChange"
 	        android:layout_weight="1.5"
-	        android:text="-2.1"/>
+	        android:text=""/>
 	
 	    <TextView
 	        style="@style/Mitt"
@@ -126,7 +122,7 @@
 	        android:layout_height="wrap_content"
 	        android:id="@+id/mittChanceChange"
 	        android:layout_weight="1"
-	        android:text="+2.1"/>
+	        android:text=""/>
     </LinearLayout>
     
      <ImageView
@@ -134,18 +130,14 @@
         android:id="@+id/chanceBar"/>
     
      <TextView
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
      android:id="@+id/popularVoteHeader"
-     android:layout_gravity="center_horizontal"
      android:text="@string/popular_vote"
      style="@style/SectionHeader"/> 
      
     <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:paddingTop="3dp">
+	    android:orientation="horizontal">
   
 	    <TextView
 	        style="@style/Barack"
@@ -161,7 +153,7 @@
 	        android:layout_height="wrap_content"
 	        android:id="@+id/barackPopularChange"
 	        android:layout_weight="1.5"
-	        android:text="-2.1"/>
+	        android:text=""/>
 	
 	    <TextView
 	        style="@style/Mitt"
@@ -177,7 +169,7 @@
 	        android:layout_height="wrap_content"
 	        android:id="@+id/mittPopularChange"
 	        android:layout_weight="1"
-	        android:text="+2.1"/>
+	        android:text=""/>
     </LinearLayout>
     
      <ImageView
@@ -200,7 +192,6 @@
 	        android:id="@+id/lastUpdated"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
-	       	android:layout_alignParentRight="true"  
-	        android:text="@string/last_updated" />
+	       	android:layout_alignParentRight="true"/>
 	  </RelativeLayout>
 </LinearLayout>

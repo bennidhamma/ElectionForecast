@@ -1,4 +1,6 @@
-package com.forgottenarts.electionforecast;
+package com.forgottenarts.electionforecastwidget;
+
+import com.forgottenarts.electionforecastwidget.R;
 
 import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
@@ -17,7 +19,7 @@ import android.widget.LinearLayout;
 
 public class MainActivity extends Activity {
 
-	public final static String EXTRA_MESSAGE = "com.forgottenarts.electionforecast.MESSAGE";
+	public final static String EXTRA_MESSAGE = "com.forgottenarts.electionforecastwidget.MESSAGE";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
